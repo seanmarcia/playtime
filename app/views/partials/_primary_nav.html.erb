@@ -1,0 +1,71 @@
+<div class="container-fluid">
+  <nav class="navbar primary-nav d-flex flex-sm-column flex-md-row">
+
+    <!-- Logo -->
+    <a href="/" class="d-flex justify-content-center">
+      <%= image_tag "HCPP_white_logo.png", class: "primary-nav-logo" %>
+    </a>
+
+    <!-- Primary Nav Bar -->
+    <div class="primary-nav-links d-flex flex-sm-column flex-md-row justify-content-center mr-auto" id="containerNavbar">
+      <ul class="navbar-nav d-flex flex-sm-column flex-md-row justify-content-center">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">
+            Home<span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        <!-- Wishlists Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle"
+             data-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false">Wishlists</a>
+
+          <div class="dropdown-menu" id="wishlists">
+            <% @wishlists.each do |wishlist| %>
+              <%= link_to wishlist.name, wishlist_path(wishlist),
+                                         class: "wishlist dropdown-item" %>
+            <% end %>
+          </div>
+        </li>
+
+        <!-- Admin Submenu -->
+        <% if current_user.admin? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">Admin Tools</a>
+
+            <div class="dropdown-menu" id="admin-tools">
+              <%= link_to "Users", users_path, class: "dropdown-item" %>
+              <%= link_to "Pledges", pledges_path, class: "dropdown-item" %>
+              <%= link_to "New Wishlist", new_wishlist_path, class: "dropdown-item" %>
+            </div>
+          </li>
+        <% end %>
+
+        <!-- Logged-In User Greeting -->
+        <li class="nav-item nav-item--greeting">
+          <% if current_user.logged_in? %>
+            <span class="user-greeting">
+              Hello, <%= link_to current_user.display_name, current_user %>
+            </span>
+          <% end %>
+        </li>
+
+        <!-- Log In/Out -->
+        <li class="nav-item">
+          <% if current_user.logged_in? %>
+            <%= link_to "Log Out", signout_path, class: "nav-link" %>
+          <% elsif Rails.env.development? && ENV['FORCE_AMAZON_LOGIN'] != 'true' %>
+            <%= link_to "Log In (Development)", signin_path, class: "nav-link" %>
+          <% else %>
+            <%= link_to "Log In", signin_path, class: "nav-link" %>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

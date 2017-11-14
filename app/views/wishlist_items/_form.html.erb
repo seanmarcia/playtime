@@ -1,0 +1,22 @@
+<%= form_with(model: wishlist_item, local: true) do |form| %>
+  <%= render partial: 'shared/error_messages', locals: { submission: wishlist_item }%>
+
+  <div class="field">
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity, id: :wishlist_item_quantity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :priority %>
+    <%= form.select :priority, WishlistItem.priorities.keys, id: :wishlist_item_priority %>
+  </div>
+
+  <div class="field">
+    <%= form.label :staff_message %>
+    <%= form.text_area :staff_message, id: :wishlist_item_staff_message %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

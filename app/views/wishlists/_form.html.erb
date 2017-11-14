@@ -1,0 +1,38 @@
+<%= form_with(model: wishlist, local: true) do |form| %>
+  <%= render partial: 'shared/error_messages', locals: { submission: wishlist }%>
+
+  <div class="form-group">
+    <%= form.label 'Wishlist Name', class: "group-label" %></br>
+    <%= form.text_field :name, id: :wishlist_name, class: "form-control text-field-md" %>
+  </div>
+
+  <%= form.fields_for :user do |user_form| %>
+    <div class="form-group" id="wishlist-admins">
+      <strong>Admins:</strong> (can manage all wishlists)
+      <div>
+        <% User.admin.each do |admin| %>
+          <input type="checkbox" checked disabled readonly />
+          <%= admin.display_name %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group" id="wishlist-site-managers">
+      <strong>Site Managers:</strong>
+      <div>
+        <%=
+          form.collection_check_boxes :user_ids, User.all, :id, :display_name do |b|
+            b.label(class: "checkbox-inline") {
+              b.check_box(id: "user-#{b.object.id}") + b.text
+            }
+          end
+        %>
+      </div>
+      </p>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

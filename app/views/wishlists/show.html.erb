@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>
+    <%= @wishlist.name %>
+    <%= social_share_button_tag("Are you a hero of play? #{@wishlist.name} needs your help!") %>
+  </h2>
+
+  <% if current_user.can_manage?(@wishlist) %>
+    <div id="wishlist-actions">
+      <%= link_to 'Add to Wishlist', new_wishlist_amazon_search_path(@wishlist) %>
+      <% if current_user.admin? %>
+        | <%= link_to 'Edit Wishlist', edit_wishlist_path(@wishlist) %>
+        | <%= link_to 'Destroy', @wishlist, method: :delete,
+                                          data: { confirm: 'Are you sure you want to delete " this wishlist?' } %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <p id="site-managers">
+    <strong>Site Managers:</strong>
+    <%= @wishlist.users.map(&:display_name).join(", ") %>
+  </p>
+
+  <%= render @wishlist_items %>
+
+  <%= link_to 'Back', root_path %>
+</div>

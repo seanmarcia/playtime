@@ -1,0 +1,35 @@
+<%= form_with(model: pledge, local: true) do |form| %>
+  <%= render partial: 'shared/error_messages', locals: { submission: pledge } %>
+
+  <dl class="row">
+    <dt class="col-sm-2">Wishlist item</dt>
+    <dd class="col-sm-10"><%= pledge.wishlist_item.name %></dd>
+
+    <dt class="col-sm-2">Wishlist</dt>
+    <dd class="col-sm-10"><%= link_to pledge.wishlist.name, pledge.wishlist %></dd>
+
+    <dt class="col-sm-2">Pledging user</dt>
+    <dd class="col-sm-10">
+      <% if pledge.anonymous? %>
+        Anonymous
+      <% else %>
+        <%= link_to pledge.user_display_name, pledge.user %>
+      <% end %>
+    </dd>
+
+    <dt class="col-sm-2"><%= form.label :quantity %></dt>
+    <dd class="col-sm-10">
+      <%= form.number_field :quantity, id: 'pledge_quantity',
+                                       class: 'form-control',
+                                       'aria-describedby': 'quantity-help' %>
+      <small id="quantity-help" class="form-text text-muted">
+        Enter the number of items you're pledging to donate. Pledges need to be
+        greater than zero! If you can no longer pledge this item, unpledge it below.
+      </small>
+    </dd>
+  </dl>
+
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

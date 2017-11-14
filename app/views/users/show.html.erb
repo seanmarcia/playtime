@@ -1,0 +1,42 @@
+<div class="container">
+  <h2><%= @user.display_name %></h2>
+
+  <div id="user-details">
+
+    <p>
+      <strong>Email:</strong>
+      <%= @user.email %>
+      <%= mail_to @user.email, icon('envelope-o') %>
+    </p>
+    <% if @user.admin?%>
+      <p><%= icon 'check-circle-o', 'Admin', class: 'text-success' %></p>
+    <% end %>
+
+      <% if @user.wishlists.any? %>
+      <strong>Managed Wishlists:</strong>
+      <p>
+        <ul id="user-wishlists">
+          <% @user.wishlists.each do |wishlist| %>
+            <li class="user-wishlist">
+              <%= link_to wishlist.name, wishlist %>
+            </li>
+          <% end %>
+        </ul>
+      </p>
+      <% end %>
+  </div>
+
+  <%= link_to 'Edit', edit_user_path(@user) %> |
+  <%= link_to 'Back', users_path %>
+
+  <hr>
+
+  <% if @user.pledges.exists? %>
+    <h3><%= posessive_pronoun(@user) %> Pledges</h3>
+    <div id="pledges">
+      <%= render @user.pledges %>
+    </div>
+  <% else %>
+      <div class="h3"><small>No pledges so far!</small></div>
+  <% end %>
+</div>
